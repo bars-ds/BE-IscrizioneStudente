@@ -1,0 +1,13 @@
+<service>
+    <id>JWS-Service</id>
+    <name>JWS-Service</name>
+    <description>JWS Service - JWT Token Management</description>
+	<env name="JWS_SERVICE" value="C:\Bars\Prodotti\DocuSign\jwt-server"/>
+	<env name="JWS_SERVICE_BIN" value="%JWS_SERVICE%\bin"/>
+	<env name="JWS_SERVICE_CONF" value="%JWS_SERVICE%\config"/>
+	<env name="JAVA_HOME" value="C:\Program Files\Java\jdk-19"/>
+	<env name="Path" value="%JAVA_HOME%\bin;%JWS_SERVICE%;%Path%"/>
+    <executable>%JAVA_HOME%\bin\java</executable>
+    <arguments>-Dfile.encoding=UTF-8 -Dspring.config.location=%JWS_SERVICE_CONF%\application.properties -Dlog4j.configurationFile=%JWS_SERVICE_CONF%\log4j2.yaml -jar "%JWS_SERVICE_BIN%\jwt-server-2.0.jar"</arguments>
+    <logmode>rotate</logmode>
+</service>
