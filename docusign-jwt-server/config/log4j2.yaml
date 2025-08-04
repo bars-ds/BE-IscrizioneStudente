@@ -1,0 +1,49 @@
+Configuration:
+  name: Default
+
+  Properties:
+    Property:
+      name: LogPattern
+      value: "%d %-5level %logger{1} - %msg %n"
+
+  Appenders:
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: "${LogPattern}"
+
+    RollingRandomAccessFile:
+      name: RollingFile
+      fileName: "${env:JWS_SERVICE}/log/jws-service.log"
+      filePattern: "${env:JWS_SERVICE}/log/jws-service-%d{yyyy-MM-dd-HH}-%i.log"
+      PatternLayout:
+        pattern: "${LogPattern}"
+      Policies:
+        CronTriggeringPolicy:
+          schedule: 0 0 0 * * ?
+      DefaultRolloverStrategy:
+        Delete:
+          basePath: "${env:JWS_SERVICE}/log"
+          maxDepth: 1
+          IfFileName:
+            glob: "*.log"
+          ifLastModified:
+            age: 30d # Log files TTL
+
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        - ref: Console
+        - ref: RollingFile
+
+    Logger:
+      - name: it.bars.jwt
+        additivity: false
+        level: info
+        AppenderRef:
+          - ref: Console
+            level: info
+          - ref: RollingFile
+            level: info
